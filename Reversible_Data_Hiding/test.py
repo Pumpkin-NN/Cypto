@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # Get the image path
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.09.tiff')
-    
+     
     pxls = get_pixels(im_path)
     print(pxls)
     modify_pixels(pxls)
