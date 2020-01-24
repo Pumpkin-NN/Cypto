@@ -16,9 +16,9 @@ def get_pixels(image_path):
     px = im.load()
 
     pixels = []
-    for i, j in zip(range(0,256), range(0,256)):
-        pixels.append((px[i, j])) 
-    
+    for i in range(0,256):
+        for j in range(0,256):
+            pixels.append((px[i, j]))
     return pixels
 
 
