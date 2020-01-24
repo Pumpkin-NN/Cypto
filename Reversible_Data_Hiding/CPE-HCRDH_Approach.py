@@ -25,7 +25,10 @@ def pre_processing(image_path):
             inv = (px[i, j] + 128) % 256
             if i == 0 or j == 0:
                 # TODO Special processing
-                pred = ( px[i+1, j] + px[i, j+1] ) // 2
+                if i == 0:
+                    pred = px[i+1, j] // 2
+                else:
+                    pred = px[i, j+1] // 2
             else:
                 pred = ( px[i-1, j] + px[i, j-1] ) // 2
             
@@ -52,7 +55,7 @@ def pre_processing(image_path):
 if __name__ == "__main__":
     # Get the image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.2.10.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
      
     updated_pixels, width, height = pre_processing(im_path)
     print(updated_pixels)
