@@ -58,7 +58,7 @@ if __name__ == "__main__":
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
     
-    '''
+    
     updated_pixels, width, height = pre_processing(im_path)
     print(updated_pixels)
     
@@ -70,8 +70,12 @@ if __name__ == "__main__":
     img = img.resize(size)
     
     # Show the pre-processing image
-    img.rotate(-90).show()
-    '''
-    image_encryption(im_path)
+    img = img.rotate(-90)
+    img.show()
+    
+    img.save("pre_processed_img.png")
+    
+    pre_processed_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/pre_processed_img.png')
+    image_encryption(pre_processed_img_path)
 
     

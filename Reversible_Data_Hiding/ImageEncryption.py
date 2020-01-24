@@ -40,4 +40,6 @@ def image_encryption(image_path):
     img = Image.fromarray(np.uint8(modify_pixels * 255) , 'L')
     size = width, height
     img = img.resize(size)
-    img.rotate(-90).show()
+    img = img.rotate(-90)
+    img.show()
+    img.save("encrypted_img.png")
