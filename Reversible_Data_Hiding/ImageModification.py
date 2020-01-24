@@ -8,13 +8,13 @@ def decimalToBinary(dec):
 def binaryToDecimal(bi): 
     return int(bi,2)
 
-def image_encryption(image_path):
+def image_modification(image_path):
     
     # Load pixels from image
     im = Image.open(image_path)
     px = im.load()
     
-    im.show()
+    # im.show()
     
     # Get the height and width from the original image
     height = im.height
@@ -41,5 +41,5 @@ def image_encryption(image_path):
     size = width, height
     img = img.resize(size)
     img = img.rotate(-90)
-    img.show()
-    img.save("encrypted_img.png")
+    # img.show()
+    return img
