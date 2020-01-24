@@ -1,10 +1,12 @@
 from PIL import Image
+import numpy as np
 import os
 
 def pre_processing(image_path):
     
     # Load pixels from image
-    im = Image.open(image_path) 
+    im = Image.open(image_path)
+    im.rotate(90).show()
     px = im.load()
 
     # Pre-Processing Algorithm
@@ -13,6 +15,8 @@ def pre_processing(image_path):
         for j in range(0,256):
             inv = (px[i, j] + 128) % 256
             if i == 0 or j == 0:
+                # TODO Special processing
+                processed_pxs.append(px[i, j]) #?
                 continue
             else:
                 pred = ( px[i-1, j] + px[i, j-1] ) // 2
@@ -30,7 +34,11 @@ def pre_processing(image_path):
             else:
                 processed_px = px[i, j]
                 processed_pxs.append(processed_px)
+    # Reshape to 2D array
+    processed_pxs = np.array(processed_pxs)
+    processed_pxs = processed_pxs.reshape(256, 256)
     
+    # Return the pre-processing pixels
     return processed_pxs
    
 
@@ -46,4 +54,8 @@ if __name__ == "__main__":
      
     updated_pixels = pre_processing(im_path)
     print(updated_pixels)
+    
+    # Create a new PIL image
+    img = Image.fromarray(np.uint8(updated_pixels * 255) , 'L')
+    img.rotate(180).show()
     
