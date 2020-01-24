@@ -16,10 +16,8 @@ def pre_processing(image_path):
     # Get the height and width from the original image
     height = im.height
     width = im.width
-    
-    # Show the original image
-    # im.show()
 
+    # Pre-processing image
     processed_pxs = []
     for i in range(0,height):
         for j in range(0,width):
@@ -63,7 +61,11 @@ def pre_processing(image_path):
 if __name__ == "__main__":
     # Get the orignal image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.3.01.tiff')
+    
+    #Save the original image
+    original_img = Image.open(im_path)
+    original_img.save("original_img.png")
     
     # Save the pre-processed image
     pre_processing_img = pre_processing(im_path)

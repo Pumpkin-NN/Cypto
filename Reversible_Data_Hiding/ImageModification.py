@@ -14,8 +14,6 @@ def image_modification(image_path):
     im = Image.open(image_path)
     px = im.load()
     
-    # im.show()
-    
     # Get the height and width from the original image
     height = im.height
     width = im.width
@@ -34,7 +32,7 @@ def image_modification(image_path):
             
     # Reshape to 2D array
     modify_pixels = np.array(modify_pixels)
-    modify_pixels = modify_pixels.reshape(256, 256)
+    modify_pixels = modify_pixels.reshape(height, width)
     
     # Create the encypted image
     img = Image.fromarray(np.uint8(modify_pixels * 255) , 'L')
