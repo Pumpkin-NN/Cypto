@@ -2,22 +2,30 @@ from PIL import Image
 import numpy as np
 import os
 
+'''
+Function: Pre-Processing Algorithm
+Goal: Correct all the prediction errors
+'''
 def pre_processing(image_path):
     
     # Load pixels from image
     im = Image.open(image_path)
-    im.rotate(90).show()
     px = im.load()
+    
+    # Get the height and width of the original image
+    height = im.height
+    width = im.width
+    
+    # Show the original image
+    im.show()
 
-    # Pre-Processing Algorithm
     processed_pxs = []
     for i in range(0,256):
         for j in range(0,256):
             inv = (px[i, j] + 128) % 256
             if i == 0 or j == 0:
                 # TODO Special processing
-                processed_pxs.append(px[i, j]) #?
-                continue
+                pred = ( px[i+1, j] + px[i, j+1] ) // 2
             else:
                 pred = ( px[i-1, j] + px[i, j-1] ) // 2
             
@@ -39,23 +47,24 @@ def pre_processing(image_path):
     processed_pxs = processed_pxs.reshape(256, 256)
     
     # Return the pre-processing pixels
-    return processed_pxs
-   
-
-
-
-
-
+    return processed_pxs, width, height 
 
 if __name__ == "__main__":
     # Get the image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.09.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.2.10.tiff')
      
-    updated_pixels = pre_processing(im_path)
+    updated_pixels, width, height = pre_processing(im_path)
     print(updated_pixels)
     
     # Create a new PIL image
     img = Image.fromarray(np.uint8(updated_pixels * 255) , 'L')
-    img.rotate(180).show()
+    
+    # Define the pre-processing image window size
+    size = width, height
+    img = img.resize(size)
+    
+    # Show the pre-processing image
+    img.rotate(-90).show()
+
     
