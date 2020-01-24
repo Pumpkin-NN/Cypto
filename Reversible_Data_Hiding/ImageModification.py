@@ -39,5 +39,6 @@ def image_modification(image_path):
     size = width, height
     img = img.resize(size)
     img = img.rotate(-90)
-    # img.show()
+    
+    # Return the modified image
     return img
