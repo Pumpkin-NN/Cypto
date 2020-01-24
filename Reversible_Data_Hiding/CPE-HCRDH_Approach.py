@@ -1,4 +1,5 @@
 from PIL import Image
+from ImageEncryption import image_encryption
 import numpy as np
 import os
 
@@ -12,7 +13,7 @@ def pre_processing(image_path):
     im = Image.open(image_path)
     px = im.load()
     
-    # Get the height and width of the original image
+    # Get the height and width from the original image
     height = im.height
     width = im.width
     
@@ -20,8 +21,8 @@ def pre_processing(image_path):
     im.show()
 
     processed_pxs = []
-    for i in range(0,256):
-        for j in range(0,256):
+    for i in range(0,height):
+        for j in range(0,width):
             inv = (px[i, j] + 128) % 256
             if i == 0 or j == 0:
                 # TODO Special processing
@@ -56,7 +57,8 @@ if __name__ == "__main__":
     # Get the image path
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
-     
+    
+    '''
     updated_pixels, width, height = pre_processing(im_path)
     print(updated_pixels)
     
@@ -69,5 +71,7 @@ if __name__ == "__main__":
     
     # Show the pre-processing image
     img.rotate(-90).show()
+    '''
+    image_encryption(im_path)
 
     
