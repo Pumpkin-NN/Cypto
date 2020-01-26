@@ -53,7 +53,6 @@ def pre_processing(image_path):
     img = Image.fromarray(np.uint8(processed_pxs * 255) , 'L')
     img = img.resize((height, width))
     img = img.rotate(-90)
-    # img.show()
     
     # Return the pre-processed image
     return img 
