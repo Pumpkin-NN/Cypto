@@ -8,7 +8,7 @@ def decimalToBinary(dec):
 def binaryToDecimal(bi): 
     return int(bi,2)
 
-def image_modification(image_path):
+def image_msb_lsb(image_path):
     
     # Load pixels from image
     im = Image.open(image_path)

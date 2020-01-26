@@ -1,6 +1,6 @@
 from PIL import Image
-from ImageModification import image_modification
-from AES_OFB import image_aes_ofb, image_recover 
+from MSB_LSB import image_msb_lsb
+from AES_OFB import image_aes_ofb, image_aes_decrypted 
 import numpy as np
 import os
 
@@ -76,31 +76,40 @@ if __name__ == "__main__":
     # Get the pre-processed image path
     pre_processed_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/pre_processed_img.png')
     
+    ############################################MSB/LSB############################################
+    
     # Save the MSB/LSB encrypted image
-    msb_encrypted_img = image_modification(pre_processed_img_path)
+    msb_encrypted_img = image_msb_lsb(pre_processed_img_path)
     msb_encrypted_img.save('msb_encrypted_img.png')
 
     # Get the MSB/LSB encrypted image path
     encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/msb_encrypted_img.png')
     
     # Save the MSB/LSB decrypted image
-    msb_decrypted_img = image_modification(encrypted_img_path)
+    msb_decrypted_img = image_msb_lsb(encrypted_img_path)
     msb_decrypted_img.save('msb_decrypted_img.png')
     
+    ############################################AES###############################################
+    
     # Save the AES encrypted pre-processing image
-    aes_encrypted_img, recover_bits = image_aes_ofb(pre_processed_img_path)
+    aes_encrypted_img, decrypted_bits= image_aes_ofb(pre_processed_img_path)
     aes_encrypted_img.save('aes_encrypted_img.png')
     
     # Save the AES decrypted pre-processing image
-    aes_decrypted_img = image_recover(recover_bits)
+    aes_decrypted_img = image_aes_decrypted(decrypted_bits)
     # aes_decrypted_img.show()
     aes_decrypted_img.save('aes_decrypted_img.png')
+    
+    ######################################Image Recover###########################################
     
     # Get the AES decrypted pre-processing image path
     aes_decrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/aes_decrypted_img.png')
     
     # Save the decrypted image
-    decrypted_img = image_modification(aes_decrypted_img_path)
-    decrypted_img.show()
-    aes_decrypted_img.save('decrypted_img.png')
+    recover_image = image_msb_lsb(aes_decrypted_img_path)
+    recover_image.show()
+    recover_image.save('recover_image.png')
+    
+    
+    
     
