@@ -96,6 +96,7 @@ if __name__ == "__main__":
     
     # Save the AES encrypted pre-processing image
     aes_encrypted_img, decrypted_bits= image_aes_ofb(pre_processed_img_path)
+    aes_encrypted_img.show()
     aes_encrypted_img.save('aes_encrypted_img.png')
     
     # Save the AES decrypted pre-processing image

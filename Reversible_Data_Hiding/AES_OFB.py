@@ -51,13 +51,19 @@ def image_aes_ofb(image_path):
     count = 0
     for i in encrypted_bits:
         count = count + 1
-        
+      
+    # Convert binary to decimal  
+    encrypted_pixels = []
+    for item in encrypted_bits:
+        encrypted_bit = binaryToDecimal(item)
+        encrypted_pixels.append(encrypted_bit)
+    
     # Reshape to 2D array
-    encrypted_bits = np.array(encrypted_bits)
-    encrypted_bits = encrypted_bits.reshape(int(math.sqrt(count)), int(math.sqrt(count)))
+    encrypted_pixels = np.array(encrypted_pixels)
+    encrypted_pixels = encrypted_pixels.reshape(int(math.sqrt(count)), int(math.sqrt(count)))
     
     # Create the AES encypted image
-    img = Image.fromarray(encrypted_bits , 'L')
+    img = Image.fromarray(np.uint8(encrypted_pixels * 255) , 'L')
     size = int(math.sqrt(count)), int(math.sqrt(count))
     img = img.resize(size)
     
