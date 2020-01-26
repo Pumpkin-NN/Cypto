@@ -1,5 +1,6 @@
 from PIL import Image
 from ImageModification import image_modification
+from AES_OFB import image_aes_ofb, image_recover 
 import numpy as np
 import os
 
@@ -59,9 +60,10 @@ def pre_processing(image_path):
     return img 
 
 if __name__ == "__main__":
+    
     # Get the orignal image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.3.01.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
     
     #Save the original image
     original_img = Image.open(im_path)
@@ -74,13 +76,25 @@ if __name__ == "__main__":
     # Get the pre-processed image path
     pre_processed_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/pre_processed_img.png')
     
-    # Save the encrypted image
+    # Save the MSB/LSB encrypted image
     img = image_modification(pre_processed_img_path)
     img.save('encrypted_img.png')
 
-    # Get the encrypted image path
+    # Get the MSB/LSB encrypted image path
     encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/encrypted_img.png')
     
-    # Save the decrypted image
+    # Save the MSB/LSB decrypted image
     img = image_modification(encrypted_img_path)
     img.save('decrypted_img.png')
+    
+    # Save the AES encrypted pre-processing image
+    img, key, IV = image_aes_ofb(pre_processed_img_path)
+    img.save('aes_encrypted_img.png')
+    print(f'i am the aes key:{key}, IV:{IV}')
+    
+    # Get the AES encrypted image path
+    aes_encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/aes_encrypted_img.png')
+    
+    # Save the AES decrypted image
+    image_recover(aes_encrypted_img_path, key, IV)
+    # img.save('aes_decrypted_img.png')

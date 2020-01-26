@@ -44,3 +44,41 @@ if __name__ == "__main__":
     inv_pixels = inverse_pixels(pxls)
     print(inv_pixels)
     
+    
+##################################################################################################################
+from base64 import b64encode
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+import random
+
+
+
+def image_aes_ofb_encryption():
+    pass
+
+
+data = b'11111111'
+
+key = get_random_bytes(16)
+
+IV = get_random_bytes(16)
+cipher = AES.new(key, AES.MODE_OFB, IV)
+print(cipher)
+ct = cipher.encrypt(pad(data, 16))
+print(ct)
+
+
+
+cipher2 = AES.new(key, AES.MODE_OFB, IV)
+pt = unpad(cipher2.decrypt(ct), 16)
+print(pt)
+# ct = b64encode(ct_bytes).decode('utf-8')
+# print(f'ct:{ct}')
+
+
+# de_bytes = cipher.decrypt(ct_bytes)
+
+# print(f'de_bytes:{de_bytes}')
+# de = (de_bytes).decode('utf-8')
+# print(f'de:{de}')
