@@ -9,6 +9,29 @@ import random
 import math
 import io
 
+def create_image(bits):
+    # Find the total items
+    count = 0
+    for i in bits:
+        count = count + 1
+      
+    # Convert binary to decimal  
+    pixels = []
+    for item in bits:
+        bit = binaryToDecimal(item)
+        pixels.append(bit)
+    
+    # Reshape to 2D array
+    pixels = np.array(pixels)
+    pixels = pixels.reshape(int(math.sqrt(count)), int(math.sqrt(count)))
+    
+    # Create the AES encypted image
+    img = Image.fromarray(np.uint8(pixels * 255) , 'L')
+    size = int(math.sqrt(count)), int(math.sqrt(count))
+    img = img.resize(size)
+    img = img.rotate(-90)
+    
+    return img
 
 def image_aes_ofb(image_path):
     
@@ -47,52 +70,14 @@ def image_aes_ofb(image_path):
     
     encrypted_bits = [encrypted_bits[x:x+8] for x in range(0,len(encrypted_bits),8)]
     
-    # Find the total items
-    count = 0
-    for i in encrypted_bits:
-        count = count + 1
-      
-    # Convert binary to decimal  
-    encrypted_pixels = []
-    for item in encrypted_bits:
-        encrypted_bit = binaryToDecimal(item)
-        encrypted_pixels.append(encrypted_bit)
-    
-    # Reshape to 2D array
-    encrypted_pixels = np.array(encrypted_pixels)
-    encrypted_pixels = encrypted_pixels.reshape(int(math.sqrt(count)), int(math.sqrt(count)))
-    
-    # Create the AES encypted image
-    img = Image.fromarray(np.uint8(encrypted_pixels * 255) , 'L')
-    size = int(math.sqrt(count)), int(math.sqrt(count))
-    img = img.resize(size)
+    img = create_image(encrypted_bits)
     
     # Return the AES encrypted image and the decrypted bits
     return img, decrypted_bits
 
-
 def image_aes_decrypted(decrypted_bits):
     
-    # Find the total items in decrypted_bits
-    count = 0
-    for i in decrypted_bits:
-        count = count + 1
-    
-    # Convert binary to decimal
-    decrypted_pixels = []
-    for item in decrypted_bits:
-        recover_bit = binaryToDecimal(item)
-        decrypted_pixels.append(recover_bit)
-    
-    # Reshape to 2D array
-    decrypted_pixels = np.array(decrypted_pixels)
-    decrypted_pixels = decrypted_pixels.reshape(int(math.sqrt(count)), int(math.sqrt(count)))
-    
-    # Create the AES decypted image
-    img = Image.fromarray(np.uint8(decrypted_pixels * 255) , 'L')
-    size = int(math.sqrt(count)), int(math.sqrt(count))
-    img = img.resize(size)
-    img = img.rotate(-90)
+    img = create_image(decrypted_bits)
     
     # Return the AES decypted image
     return img

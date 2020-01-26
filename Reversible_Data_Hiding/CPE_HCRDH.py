@@ -66,7 +66,7 @@ if __name__ == "__main__":
     
     # Get the orignal image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.11.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.2.09.tiff')
     
     #Save the original image
     original_img = Image.open(im_path)
@@ -96,7 +96,6 @@ if __name__ == "__main__":
     
     # Save the AES encrypted pre-processing image
     aes_encrypted_img, decrypted_bits= image_aes_ofb(pre_processed_img_path)
-    aes_encrypted_img.show()
     aes_encrypted_img.save('aes_encrypted_img.png')
     
     # Save the AES decrypted pre-processing image
