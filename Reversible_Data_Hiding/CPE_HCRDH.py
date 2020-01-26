@@ -77,24 +77,30 @@ if __name__ == "__main__":
     pre_processed_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/pre_processed_img.png')
     
     # Save the MSB/LSB encrypted image
-    img = image_modification(pre_processed_img_path)
-    img.save('encrypted_img.png')
+    msb_encrypted_img = image_modification(pre_processed_img_path)
+    msb_encrypted_img.save('msb_encrypted_img.png')
 
     # Get the MSB/LSB encrypted image path
-    encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/encrypted_img.png')
+    encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/msb_encrypted_img.png')
     
     # Save the MSB/LSB decrypted image
-    img = image_modification(encrypted_img_path)
-    img.save('decrypted_img.png')
+    msb_decrypted_img = image_modification(encrypted_img_path)
+    msb_decrypted_img.save('msb_decrypted_img.png')
     
     # Save the AES encrypted pre-processing image
-    img, key, IV = image_aes_ofb(pre_processed_img_path)
-    img.save('aes_encrypted_img.png')
-    print(f'i am the aes key:{key}, IV:{IV}')
+    aes_encrypted_img, recover_bits = image_aes_ofb(pre_processed_img_path)
+    aes_encrypted_img.save('aes_encrypted_img.png')
     
-    # Get the AES encrypted image path
-    aes_encrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/aes_encrypted_img.png')
+    # Save the AES decrypted pre-processing image
+    aes_decrypted_img = image_recover(recover_bits)
+    # aes_decrypted_img.show()
+    aes_decrypted_img.save('aes_decrypted_img.png')
     
-    # Save the AES decrypted image
-    image_recover(aes_encrypted_img_path, key, IV)
-    # img.save('aes_decrypted_img.png')
+    # Get the AES decrypted pre-processing image path
+    aes_decrypted_img_path = os.path.join(root_dir, 'Reversible_Data_Hiding/aes_decrypted_img.png')
+    
+    # Save the decrypted image
+    decrypted_img = image_modification(aes_decrypted_img_path)
+    decrypted_img.show()
+    aes_decrypted_img.save('decrypted_img.png')
+    
