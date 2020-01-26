@@ -1,6 +1,6 @@
 from PIL import Image
 from MSB_LSB import image_msb_lsb
-from AES_OFB import image_aes_ofb, image_aes_decrypted 
+from AES_CBC import image_aes_cbc, image_aes_decrypted 
 import numpy as np
 import os
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     ############################################AES###############################################
     
     # Save the AES encrypted pre-processing image
-    aes_encrypted_img, decrypted_bits= image_aes_ofb(pre_processed_img_path)
+    aes_encrypted_img, decrypted_bits= image_aes_cbc(pre_processed_img_path)
     aes_encrypted_img.save('aes_encrypted_img.png')
     
     # Save the AES decrypted pre-processing image

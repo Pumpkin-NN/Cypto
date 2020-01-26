@@ -32,7 +32,7 @@ def create_image(bits):
     
     return img
 
-def image_aes_ofb(image_path):
+def image_aes_cbc(image_path):
     
     # Load pixels from image
     im = Image.open(image_path)
@@ -56,9 +56,9 @@ def image_aes_ofb(image_path):
             
             modify_pixel = LSB + MSB
             modify_pixel = bytes(modify_pixel, 'utf-8')
-            cipher = AES.new(key, AES.MODE_OFB, IV)
+            cipher = AES.new(key, AES.MODE_CBC, IV)
             cipher_text = cipher.encrypt(pad(modify_pixel, 16))
-            decipher = AES.new(key, AES.MODE_OFB, IV)
+            decipher = AES.new(key, AES.MODE_CBC, IV)
             plain_text = unpad(decipher.decrypt(cipher_text), 16)
             plain_text = plain_text.decode('utf-8')
             
