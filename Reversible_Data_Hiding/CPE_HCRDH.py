@@ -59,11 +59,14 @@ def pre_processing(image_path):
     # Return the pre-processed image
     return img 
 
+'''
+Main Function
+'''
 if __name__ == "__main__":
     
     # Get the orignal image path
     root_dir = os.path.dirname(os.getcwd())
-    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.12.tiff')
+    im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.1.11.tiff')
     
     #Save the original image
     original_img = Image.open(im_path)
@@ -97,7 +100,6 @@ if __name__ == "__main__":
     
     # Save the AES decrypted pre-processing image
     aes_decrypted_img = image_aes_decrypted(decrypted_bits)
-    # aes_decrypted_img.show()
     aes_decrypted_img.save('aes_decrypted_img.png')
     
     ######################################Image Recover###########################################
@@ -107,7 +109,6 @@ if __name__ == "__main__":
     
     # Save the decrypted image
     recover_image = image_msb_lsb(aes_decrypted_img_path)
-    recover_image.show()
     recover_image.save('recover_image.png')
     
     
