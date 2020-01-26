@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+
 # Convert decimal to binary
 def decimalToBinary(dec):  
     return bin(dec).replace("0b", "").zfill(8)
