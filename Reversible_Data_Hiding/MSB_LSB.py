@@ -8,6 +8,9 @@ def decimalToBinary(dec):
 def binaryToDecimal(bi): 
     return int(bi,2)
 
+'''
+Function: Use MSB/LSB method to encrypt/decrypt the image
+'''
 def image_msb_lsb(image_path):
     
     # Load pixels from image

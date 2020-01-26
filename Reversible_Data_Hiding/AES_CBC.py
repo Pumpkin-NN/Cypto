@@ -9,6 +9,9 @@ import random
 import math
 import io
 
+'''
+Function: Create Image
+'''
 def create_image(bits):
     # Find the total items
     count = 0
@@ -32,6 +35,9 @@ def create_image(bits):
     
     return img
 
+'''
+Function: Use AES to encrypt/decrypt image
+'''
 def image_aes_cbc(image_path):
     
     # Load pixels from image
