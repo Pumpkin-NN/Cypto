@@ -29,7 +29,6 @@ def create_image(bits):
     img = Image.fromarray(np.uint8(pixels * 255) , 'L')
     size = int(math.sqrt(count)), int(math.sqrt(count))
     img = img.resize(size)
-    img = img.rotate(-90)
     
     return img
 
@@ -71,6 +70,7 @@ def image_aes_ofb(image_path):
     encrypted_bits = [encrypted_bits[x:x+8] for x in range(0,len(encrypted_bits),8)]
     
     img = create_image(encrypted_bits)
+    img = img.rotate(-90)
     
     # Return the AES encrypted image and the decrypted bits
     return img, decrypted_bits
@@ -78,6 +78,7 @@ def image_aes_ofb(image_path):
 def image_aes_decrypted(decrypted_bits):
     
     img = create_image(decrypted_bits)
+    img = img.rotate(-90)
     
     # Return the AES decypted image
     return img
