@@ -51,7 +51,6 @@ def image_aes_ofb(image_path):
     
     # print(f"i am cipher:\n{key}\n{IV} ")
     
-    count = 0
     for i in range(0,height):
         for j in range(0,width):
             bi = decimalToBinary(px[i,j])
@@ -66,9 +65,7 @@ def image_aes_ofb(image_path):
             
             img_bin = open("Di1.bin", "ab")
             img_bin.write(cipher_text)
-            count = count + 1
-            
-    print(count)
+    
     print("write done")
     # Define width and height
     w, h = 2048, 2048
