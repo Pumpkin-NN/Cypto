@@ -62,21 +62,27 @@ def image_aes_ofb(image_path):
             
             cipher = AES.new(key, AES.MODE_OFB, IV)
             cipher_text = cipher.encrypt(pad(modify_pixel, 16))
+            # print(type(cipher_text))
             
             img_bin = open("Di1.bin", "ab")
+            #img_bin = open("Di1.dat", "ab")
             img_bin.write(cipher_text)
     
     print("write done")
-    # Define width and height
-    w, h = 2048, 2048
 
+    #dt = np.dtype(np.int32)
+    dt = np.dtype(np.uint8)
+    
     # Read file using numpy "fromfile()"
     with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', mode='rb') as f:
-        d = np.fromfile(f,dtype=np.uint8,count=w*h).reshape(h,w)
+    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', mode='rb') as f:
+        # d = np.fromfile(f,dtype=np.uint8,count=w*h).reshape(h,w)
+        d = np.fromfile(f, dtype=dt, count=height*width).reshape(height,width)
 
     # Make into PIL Image and save
     img = Image.fromarray(d)
-    img.save('Di1.png')
+    img.save('Di1_bin.png')
+    #img.save('Di1_dat.png')
     
     return img, key, IV
 
@@ -84,72 +90,47 @@ def image_aes_decrypted(image_path, key, IV):
     #print(f"\n\ni am decipher:\n{key}\n{IV}\n\n ")
     decipher = AES.new(key, AES.MODE_OFB, IV)
 
-
-    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.png', 'rb') as f:
+    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', 'rb') as f:
+    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', 'rb') as f:
         f = f.read()
-    # print(len(f))
-    
-    with open('try1.bin', 'wb') as fi:
-        fi.write(f)
+    print(type(f))
     
     '''
     items = []
     for x in range(0,len(f),16):
-        pixel = f[x:x+16]
-        items.append(pixel)
-    
-    items = items[:-1]
-    
-    for i in items:
-        print(f'i:{i}')
-        plain_text = unpad(decipher.decrypt(i), 16)
-        print(plain_text)
-        break
+        item = f[x:x+16]
+        plain_text = unpad(decipher.decrypt(item), 16)
+        items.append(plain_text)
+        
+    print(items)
+    '''        
+        
     '''
-    '''
-    im = Image.open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.png')
-    # im_resize = im.resize((500, 500))
-    buf = io.BytesIO()
-    im.save(buf, format='PNG')
-    byte_im = buf.getvalue()
-    print(byte_im)
-    '''
-    # print(len(byte_im))
-    
-    # plain_text = unpad(decipher.decrypt(byte_im), 16)
-    # print(plain_text)
-    
-    
-    # items = []
-    # for x in range(0,len(byte_im),16):
-    #     pixel = byte_im[x:x+16]
-    #     items.append(pixel)
-    
-    # items = items[:-1]
-    # print(items)
-    
-    '''
-    byte = b''
-    for m in items:
-        byte = byte + m
-    
-    print(len(byte))
-    
-    plain_text = unpad(decipher.decrypt(byte), 16)
-    print(plain_text)
-    '''
-    # plain_texts = b''
-    # for k, i in enumerate(items):
-    #     plain_text = unpad(decipher.decrypt(i), 16)
-    #     plain_texts = plain_texts + plain_text
-    
-    # print(plain_texts) 
-    
-    # fh = open("imageToSave.png", "wb")
-    # fh.write(plain_texts)
-    # fh.close()   
+    # with open('try1.bin', 'ab') as fi:
+        items = []
+        for x in range(0,len(f),16):
+            pixel = f[x:x+16]
+            items.append(pixel)
+        
+        items = items[:-1]
 
+        for i in items:
+            
+            # fi.write(plain_text)
+            break
+    '''
+    '''       
+    # Define width and height
+    w, h = 512, 512
 
+    # Read file using numpy "fromfile()"
+    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/try1.bin', mode='rb') as f:
+        d = np.fromfile(f,dtype=np.uint8,count=w*h).reshape(h,w)
+
+    # Make into PIL Image and save
+    img = Image.fromarray(d)
+    img.save('Di2.png')
+    '''
 if __name__ == '__main__':
     img, key, IV= image_aes_ofb('/Users/home/github/Cypto/Reversible_Data_Hiding/pre_processed_img.png')
     # img.save('draft.png')
