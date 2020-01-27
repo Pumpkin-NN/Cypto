@@ -85,72 +85,24 @@ def image_aes_decrypted(image_path, key, IV):
     print(f"\n\ni am decipher:\n{key}\n{IV}\n\n ")
     decipher = AES.new(key, AES.MODE_OFB, IV)
     
-    im = Image.open("draft.png")
-    px = im.load()
-    
-    height = im.height
-    width = im.width
-    
-    pixels = ''
-    for i in range(0, height):
-        for j in range(0, width):
-                bit = decimalToBinary(px[i, j])
-                # bit = str(px[i, j])
-                pixels = pixels + bit
-
-
-    pixels = hex(int(pixels,2))[2:]
-    # pixels = binascii.hexlify('%x' % pixels)
-    
+    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/draft.png','rb') as img:
+        img_data = img.read()
+        # print(img_data)
+        
     items = []
-    for x in range(0,len(pixels),32):
-        pixel = '0x' + pixels[x:x+32]
+    for x in range(0,len(img_data),16):
+        pixel = img_data[x:x+16]
         items.append(pixel)
         
     
-    # ciph: 0x3c02e830e0f9ddae13e4fbcdcff17fae
-    # deph: 0x39a2408b81a069d48033f92f22628c01
+    items = items[:-1]
+    print(items)
     
-    for k, item in enumerate(items):
-        
-        if k > 7:
-            break
-        # print(item)
-        # item = bytes(str(int(item, 16)), 'utf8')
-        # item = item.decode('utf8')
-        # item = bytes(item, 'utf-8')
-        # item = bytearray(item, 'utf-16') 
-        # item = bytes(item, 'utf-16')
-        # item = item.decode("utf-8").encode("utf-16")
-        print(item)
-        # item = item[2:]
-        # Bitem=binascii.unhexlify(item)
-        # item = item.decode('utf-8')
-        # print(Bitem)
-        # Bitem = bytes.fromhex(item)
-        # item = bytes(item, 'utf8')
-        # item = bytes(item).encode('utf-8')
-        # Bitem=binascii.unhexlify(item)
-        # Bitem = item.decode('hex')
-        # print(Bitem)
-        # plain_text = unpad(decipher.decrypt(item), 16)
-        
+    for i in items:
+        # print(type(i))
+        # plain_text = unpad(decipher.decrypt(i), 16)
         # print(plain_text)
-
-    # Item format: b'\x92\x98\xad\xa7\x8a\xf3k\x8c\n\x91\x9c\xdb6u\x86\xad'
-    #              b'\xdf\x95\xc7\x8f\xferg\xb2\x85\xb9\x8d\xb3\x11\xe5\xfa\xd4'
-    #              b'T\xba\xec\xe1\xcd\xaf\x9d$~~\xab\xc7t0(\xb1'
-    
-    
-    # Ciph format: b'\x19S\x12l\x06L\xe1\x0fn\xb0\x94\x8c\x85\xcd\x03\x1a'
-    
-    # plain_text = unpad(decipher.decrypt(i), 16)
-    # print(plain_text)
-        
-    # byte = binascii.hexlify(bytearray(pixels))
-    # print(byte)
-    
-    # return pixels
+        break
 
 
 if __name__ == '__main__':
