@@ -5,8 +5,8 @@ from bitstring import BitArray
 from Crypto.Cipher import AES
 from PIL import Image
 import numpy as np
-import binascii
 import random
+import pickle
 
 import math
 import io
@@ -45,11 +45,10 @@ def image_aes_ofb(image_path):
     width = im.width
     
     # AES_CBC encryption
-    key = get_random_bytes(16)
-    IV = get_random_bytes(16)
+    key = b'\xfa\xde8\t\xda\xc0\x9f\xf9E%\xee\xb5P\xe6\x9b\xc7'
+    IV = b'\xbe\xad\x17\x19\t\x98`;\xd5\x1c\xc9H\xd3[\xc2g'
     
-    print(f"i am cipher:\n{key}\n{IV} ")
-    encrypted_bits = ""
+    ciphertext = []
     for i in range(0,height):
         for j in range(0,width):
             bi = decimalToBinary(px[i,j])
@@ -60,54 +59,40 @@ def image_aes_ofb(image_path):
             modify_pixel = bytes(modify_pixel, 'utf-8')
             
             cipher = AES.new(key, AES.MODE_OFB, IV)
-            cipher_text = cipher.encrypt(pad(modify_pixel, 16))
-            #decipher = AES.new(key, AES.MODE_OFB, IV)
-            #plain_text = unpad(decipher.decrypt(cipher_text), 16)
-            #plain_text = plain_text.decode('utf-8')
-            #print(type(cipher_text))
-            cipher_text = BitArray(cipher_text)
-            
-            # print(f'bit_array:{cipher_text}')
-            cipher_text = cipher_text.bin
-            encrypted_bits = encrypted_bits + cipher_text
-            #decrypted_bits.append(plain_text)
+            cipher_text = cipher.encrypt(pad(modify_pixel, 16)) 
+            ciphertext.append(cipher_text)
     
-    encrypted_bits = [encrypted_bits[x:x+8] for x in range(0,len(encrypted_bits),8)]
+    # Use pickle to write the list
+    with open('Di1.pickle', 'wb') as pickle_out:
+        pickle.dump(ciphertext, pickle_out)
     
-    img = create_image(encrypted_bits)
-    img = img.rotate(-90)
+    print("Written done!")
     
-    
-    # Return the AES encrypted image and the decrypted bits
-    return img, key, IV
+    return key, IV
 
 def image_aes_decrypted(image_path, key, IV):
-    print(f"\n\ni am decipher:\n{key}\n{IV}\n\n ")
-    decipher = AES.new(key, AES.MODE_OFB, IV)
-    
-    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/draft.png','rb') as img:
-        img_data = img.read()
-        # print(img_data)
-        
-    items = []
-    for x in range(0,len(img_data),16):
-        pixel = img_data[x:x+16]
-        items.append(pixel)
-        
-    
-    items = items[:-1]
-    print(items)
-    
-    for i in items:
-        # print(type(i))
-        # plain_text = unpad(decipher.decrypt(i), 16)
-        # print(plain_text)
-        break
 
-
+    # Load the data from the pickle file
+    with open('Di1.pickle', 'rb') as List:
+        List = pickle.load(List)
+    
+    PlainText = []
+    for item in List:
+        decipher = AES.new(key, AES.MODE_OFB, IV)
+        pt = unpad(decipher.decrypt(item), 16)
+        PlainText.append(pt)
+    print(PlainText)
+    
+    img = create_image(PlainText)
+    img = img.rotate(-90)
+    img.save("yeah.png")
+    
+    
+    
 if __name__ == '__main__':
-    img, key, IV= image_aes_ofb('/Users/home/github/Cypto/Reversible_Data_Hiding/pre_processed_img.png')
-    img.save('draft.png')
+    key, IV= image_aes_ofb('/Users/home/github/Cypto/Reversible_Data_Hiding/pre_processed_img.png')
+    # img.save('draft.png')
+    
     
     image_aes_decrypted('/Users/home/github/Cypto/Reversible_Data_Hiding/draft.png', key, IV)
     

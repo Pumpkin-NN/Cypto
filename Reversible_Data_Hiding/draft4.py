@@ -8,6 +8,7 @@ import numpy as np
 import binascii
 import random
 import base64
+import pickle
 
 import math
 import io
@@ -46,11 +47,12 @@ def image_aes_ofb(image_path):
     width = im.width
     
     # AES_CBC encryption
-    key = get_random_bytes(16)
-    IV = get_random_bytes(16)
+    key = b'\xfa\xde8\t\xda\xc0\x9f\xf9E%\xee\xb5P\xe6\x9b\xc7'
+    IV = b'\xbe\xad\x17\x19\t\x98`;\xd5\x1c\xc9H\xd3[\xc2g'
     
-    # print(f"i am cipher:\n{key}\n{IV} ")
+    #print(f"i am cipher:\n{key}\n{IV} ")
     
+    ciphertext = []
     for i in range(0,height):
         for j in range(0,width):
             bi = decimalToBinary(px[i,j])
@@ -61,28 +63,35 @@ def image_aes_ofb(image_path):
             modify_pixel = bytes(modify_pixel, 'utf-8')
             
             cipher = AES.new(key, AES.MODE_OFB, IV)
-            cipher_text = cipher.encrypt(pad(modify_pixel, 16))
-            # print(type(cipher_text))
-            
-            img_bin = open("Di1.bin", "ab")
-            #img_bin = open("Di1.dat", "ab")
-            img_bin.write(cipher_text)
+            cipher_text = cipher.encrypt(pad(modify_pixel, 16)) 
+            ciphertext.append(cipher_text)
+              
+    with open("Di1.dat", "ab") as img_bin:
+        for item in ciphertext:
+            img_bin.write(item)
+            img_bin.write(b",")
     
-    print("write done")
-
+    # Use pickle to write the list
+    with open('Di1.pickle', 'wb') as f:
+        pickle.dump(ciphertext, f)
+    
+    print("both written done!")
+    
     #dt = np.dtype(np.int32)
     dt = np.dtype(np.uint8)
     
     # Read file using numpy "fromfile()"
-    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', mode='rb') as f:
-    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', mode='rb') as f:
+    
+    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', mode='rb') as f:
+    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', mode='rb') as f:
         # d = np.fromfile(f,dtype=np.uint8,count=w*h).reshape(h,w)
         d = np.fromfile(f, dtype=dt, count=height*width).reshape(height,width)
 
     # Make into PIL Image and save
     img = Image.fromarray(d)
-    img.save('Di1_bin.png')
-    #img.save('Di1_dat.png')
+    
+    #img.save('Di1_bin.png')
+    img.save('Di1_dat.png')
     
     return img, key, IV
 
@@ -90,20 +99,62 @@ def image_aes_decrypted(image_path, key, IV):
     #print(f"\n\ni am decipher:\n{key}\n{IV}\n\n ")
     decipher = AES.new(key, AES.MODE_OFB, IV)
 
-    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', 'rb') as f:
-    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', 'rb') as f:
-        f = f.read()
-    print(type(f))
+    #with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.bin', 'rb') as f:
+    with open('/Users/home/github/Cypto/Reversible_Data_Hiding/Di1.dat', 'rb') as f:
+        f = f.read().split(b",")
+
+    with open('Di1.pickle', 'rb') as fi:
+        fi_list = pickle.load(fi)
+    #print(fi_list)
+    #print(f)
+    #f_list = f[:-1]
+    
+    # b'\xa6\tY\x01$\xda\x84\xbf\x9fv\xf9\xf8\xb6A]\x1e'
+    
+    
+    print(len(fi_list[0]))
+    print(len(fi_list[1]))
+    print(len(fi_list[-1]))
+    
+    plain_text = unpad(decipher.decrypt(fi_list[3]), 16)
+    print(plain_text)
+    '''
+    plaintext = []
+    for i in range(0, len(fi_list)):
+        if len(fi_list[i]) == 16:
+            print(fi_list[i])
+            plain_text = unpad(decipher.decrypt(fi_list[i]), 16)
+            continue
+        else:
+            print(len(fi_list[i]))
+            print("wrong")
+            break
+    print(plaintext)
+    '''
+    '''
+    plaintext = []
+    for i in range(1, len(f_list)):
+        plain_text = unpad(decipher.decrypt(f_list[i]), 16)
+        plaintext.append(plain_text)
+    print(plaintext)
+    '''
+    
+    
+    
+    
+    
     
     '''
-    items = []
-    for x in range(0,len(f),16):
-        item = f[x:x+16]
-        plain_text = unpad(decipher.decrypt(item), 16)
-        items.append(plain_text)
+    for item in f_list:
+        print(item)
+        # plain_text = unpad(decipher.decrypt(item), 16)
+        #item: b'C\xe1$\xed@}\xef\x83J\x80\x18)\xab\x17\x9d\x80'
+        #ciph: b'\xa6\x08X\x01$\xda\x84\xbf\x9fv\xf9\xf8\xb6A]\x1e'
+        #file: b'\xa6\x08X\x00$\xdb\x84\xbe\x9fv\xf9\xf8\xb6A]\x1e'
+        break
         
-    print(items)
-    '''        
+    # print(items)
+    ''' 
         
     '''
     # with open('try1.bin', 'ab') as fi:
