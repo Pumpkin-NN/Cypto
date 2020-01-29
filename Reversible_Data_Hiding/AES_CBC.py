@@ -69,7 +69,7 @@ def image_aes_decrypted(f, key, IV):
         plainbit = unpad(decipher.decrypt(item), 16)
         plainbits.append(plainbit)
     
-    # Create Image
+    # Create image
     # Find the total items
     count = 0
     for i in plainbits:
