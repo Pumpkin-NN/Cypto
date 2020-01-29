@@ -40,11 +40,15 @@ if __name__ == "__main__":
     ############################################AES###############################################
     
     # Save the AES encrypted pre-processing image
-    aes_encrypted_img, decrypted_bits= image_aes_cbc(pre_processed_img_path)
+    aes_encrypted_img, key, IV= image_aes_cbc(pre_processed_img_path)
     aes_encrypted_img.save('aes_encrypted_img.png')
     
+    # Get the source file
     # Save the AES decrypted pre-processing image
-    aes_decrypted_img = image_aes_decrypted(decrypted_bits)
+    root_dir = os.path.dirname(os.getcwd())
+    aes_image = os.path.join(root_dir, 'Reversible_Data_Hiding/aes_image.pickle')
+    aes_decrypted_img = image_aes_decrypted(aes_image, key, IV)
+    
     aes_decrypted_img.save('aes_decrypted_img.png')
     
     ######################################Image Recover###########################################
@@ -55,7 +59,6 @@ if __name__ == "__main__":
     # Save the decrypted image
     recover_image = image_msb_lsb(aes_decrypted_img_path)
     recover_image.save('recover_image.png')
-    
     
     
     
