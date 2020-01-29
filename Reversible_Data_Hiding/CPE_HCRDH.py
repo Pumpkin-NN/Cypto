@@ -13,7 +13,7 @@ if __name__ == "__main__":
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.2.09.tiff')
     
-    #Save the original image
+    # Save the original image
     original_img = Image.open(im_path)
     original_img.save("original_img.png")
     
