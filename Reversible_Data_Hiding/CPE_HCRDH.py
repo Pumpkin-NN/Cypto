@@ -9,7 +9,7 @@ Main Function
 '''
 if __name__ == "__main__":
     
-    # Get the orignal image path
+    # Get the original image path
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/5.2.09.tiff')
     
@@ -59,6 +59,3 @@ if __name__ == "__main__":
     # Save the decrypted image
     recover_image = image_msb_lsb(aes_decrypted_img_path)
     recover_image.save('recover_image.png')
-    
-    
-    

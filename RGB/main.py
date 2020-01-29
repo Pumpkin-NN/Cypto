@@ -7,7 +7,7 @@ Main Function
 '''
 if __name__ == "__main__":
     
-    # Get the orignal image path
+    # Get the original image path
     root_dir = os.path.dirname(os.getcwd())
     im_path = os.path.join(root_dir, 'Reversible_Data_Hiding/misc/4.2.07.tiff')
     
@@ -17,5 +17,3 @@ if __name__ == "__main__":
     
     # Pre-processing image
     pre_processing(im_path)
-    
-    
