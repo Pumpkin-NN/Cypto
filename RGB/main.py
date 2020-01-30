@@ -1,5 +1,6 @@
-from pre_processing import pre_processing
-from pre_processing import generate_key
+from image_process import image_encrypt
+from image_process import image_decrypt
+from image_process import generate_key
 from PIL import Image
 import os
 
@@ -16,13 +17,14 @@ if __name__ == "__main__":
     original_img = Image.open(im_path)
     original_img.save("original_img.png")
     
-    # Pre-processing image
-    # Encode image
+    # Encrypt image
     key = generate_key()
-    encode_image = pre_processing(im_path, key)
+    encode_image, decipher_key = image_encrypt(im_path, key)
     encode_image.save("encode_image.png")
     
     # Recover image
     encode_image_path = os.path.join(root_dir, 'RGB/encode_image.png')
-    recover_image = pre_processing(encode_image_path, key)
+    recover_image = image_decrypt(encode_image_path, decipher_key)
     recover_image.save("recover_image.png")
+
+    
