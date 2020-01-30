@@ -14,9 +14,6 @@ def exchange_msb_lsb(b, key):
     b = bin(b)[2:].zfill(8)
     msb = b[:4]
     lsb = b[4:]
-    if lsb == '0000':
-        lsb = int(lsb, 2) ^ int(key[:4], 2)
-        lsb = bin(lsb)[2:].zfill(8)
     if lsb == msb:
         lsb = int(lsb, 2) ^ int(key[4:], 2)
         lsb = bin(lsb)[2:].zfill(8)
