@@ -1,5 +1,5 @@
-from PIL import Image
 from bitstring import BitArray
+from PIL import Image
 import numpy as np
 import os
 
