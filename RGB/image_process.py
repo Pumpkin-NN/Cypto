@@ -7,7 +7,6 @@ def generate_key():
     random_key = os.urandom(1)
     random_key = BitArray(random_key)
     random_key = random_key.bin
-    print(f'random_key:{random_key}')
     return random_key
 
 def decimalToBinary(dec):  

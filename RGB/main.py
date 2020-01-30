@@ -16,7 +16,7 @@ if __name__ == "__main__":
     original_img = Image.open(im_path)
     original_img.save("original_img.png")
     
-    '''
+    
     # Encrypt image
     key = generate_key()
     encode_image, decipher_key = image_encrypt(im_path, key)
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     encode_image_path = os.path.join(root_dir, 'RGB/encode_image.png')
     recover_image = image_decrypt(encode_image_path, decipher_key)
     recover_image.save("recover_image.png")
-    '''
+    
     # AES encrypt image
     encrypted_aes_image, key, IV = aes_image_encrypt('/Users/home/github/Cypto/RGB/misc/lena.tiff')
     encrypted_aes_image.save("encrypted_aes_image.png")

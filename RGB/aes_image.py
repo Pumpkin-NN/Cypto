@@ -19,12 +19,12 @@ def exchange_msb_lsb(bi):
     nb = LSB + MSB
     return nb
     
-def aes(bits, key, IV):
+def aes_encrypted_bits(bits, key, IV):
     cipher = AES.new(key, AES.MODE_OFB, IV)
     bits = cipher.encrypt(pad(bits, 16))
     return bits
 
-def recover(bits, key, IV):
+def aes_decrypted_bits(bits, key, IV):
     decipher = AES.new(key, AES.MODE_OFB, IV)
     bits = unpad(decipher.decrypt(bits), 16)
     bits = binaryToDecimal(bits)
@@ -59,15 +59,15 @@ def aes_image_encrypt(image_path):
             (R, G, B) = px[i,j]
             R = exchange_msb_lsb(decimalToBinary(R))
             R = bytes(R, 'utf-8')
-            R = aes(R, key, IV)
+            R = aes_encrypted_bits(R, key, IV)
             
             G = exchange_msb_lsb(decimalToBinary(G))
             G = bytes(G, 'utf-8')
-            G = aes(G, key, IV)
+            G = aes_encrypted_bits(G, key, IV)
             
             B = exchange_msb_lsb(decimalToBinary(B))
             B = bytes(B, 'utf-8')
-            B = aes(B, key, IV)
+            B = aes_encrypted_bits(B, key, IV)
             
             # AES encrypt bits
             encrypted_bit = (R, G, B)
@@ -98,9 +98,9 @@ def aes_image_decrypt(img, key, IV):
     decrypted_bits = []
     for pixel in List:
         (R, G, B) = pixel
-        R = recover(R, key, IV)
-        G = recover(G, key, IV)
-        B = recover(B, key, IV)
+        R = aes_decrypted_bits(R, key, IV)
+        G = aes_decrypted_bits(G, key, IV)
+        B = aes_decrypted_bits(B, key, IV)
         
         decrypted_bit = (R, G, B)
         decrypted_bits.append(decrypted_bit)
