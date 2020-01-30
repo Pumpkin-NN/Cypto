@@ -16,7 +16,6 @@ def decimalToBinary(dec):
 def binaryToDecimal(bi):
     return int(b, 2)
 
-
 def pixel_encode_process(pixel, key):
     pixel = pixel ^ int(key, 2)
     pixel = decimalToBinary(pixel)
@@ -34,8 +33,7 @@ def pixel_decode_process(pixel, key):
     rb = binaryToDecimal(rb)
     rb = rb ^ int(key, 2)
     return rb
-    
-    
+   
 def binaryToDecimal(b):
     d = int(b, 2)
     return d
