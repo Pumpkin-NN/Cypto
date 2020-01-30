@@ -21,7 +21,7 @@ def image_aes_cbc(image_path):
     height = im.height
     width = im.width
     
-    # AES_OFB encryption
+    # AES_CBC encryption
     key = get_random_bytes(16)
     IV = get_random_bytes(16)
     

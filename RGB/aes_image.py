@@ -1,8 +1,8 @@
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
+from PIL import Image, ImageOps
 from bitstring import BitArray
 from Crypto.Cipher import AES
-from PIL import Image
 import numpy as np
 import pickle
 import math
@@ -81,19 +81,18 @@ def aes_image_encrypt(image_path):
             image_bits.append(image_bit)
             
     # Use pickle to store the cipher
-    with open('aes_image.pickle', 'wb') as f:
+    with open('aes_encrypted_image.pickle', 'wb') as f:
         pickle.dump(encrypted_bits, f)  
      
        
     OUTPUT_IMAGE_SIZE = (height, width)
     image = Image.new('RGB', OUTPUT_IMAGE_SIZE)
     image.putdata(image_bits)
-    image.save("ei.png")
     
     return image, key, IV
     
 def aes_image_decrypt(img, key, IV):
-    with open('aes_image.pickle', 'rb') as List:
+    with open('aes_encrypted_image.pickle', 'rb') as List:
         List = pickle.load(List)
     
     decrypted_bits = []
@@ -112,11 +111,9 @@ def aes_image_decrypt(img, key, IV):
     image = Image.new('RGB', OUTPUT_IMAGE_SIZE)
     image.putdata(decrypted_bits)
     image = image.rotate(-90)
-    image.save("di.png")
+    image = ImageOps.mirror(image)
     
-    
-if __name__ == "__main__":
-   image, key, IV = aes_image_encrypt('/Users/home/github/Cypto/RGB/misc/lena.tiff')
+    return image
    
    
-   aes_image_decrypt(image, key, IV)
+   
