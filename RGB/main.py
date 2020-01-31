@@ -28,7 +28,7 @@ if __name__ == "__main__":
     decode_image.save("decode_image.png")
     
     # AES encrypt image
-    encrypted_aes_image, key, IV = aes_image_encrypt('/Users/home/github/Cypto/RGB/misc/lena.tiff')
+    encrypted_aes_image, key, IV = aes_image_encrypt(im_path)
     encrypted_aes_image.save("encrypted_aes_image.png")
     
     # Get the pickle path

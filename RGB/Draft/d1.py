@@ -19,6 +19,10 @@ def exchange_msb_lsb(bi):
     nb = LSB + MSB
     return nb
     
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        return lst[i:i + n]
+
 def aes(bits, key, IV):
     cipher = AES.new(key, AES.MODE_OFB, IV)
     bits = cipher.encrypt(pad(bits, 16))
@@ -35,8 +39,16 @@ def recover(bits, key, IV):
 
 def bits_modify(bits):
     bits = BitArray(bits)
-    bits = bits.bin[:8]
-    bits = binaryToDecimal(bits)
+    bits = bits.hex
+    
+    bits = chunks(bits, 16)
+    bits = bits[:1]
+    bits = int(bits, 16)
+    
+    print(bits)
+    print("\n")
+    # bits = bits.bin[:8]
+    # bits = binaryToDecimal(bits)
     return bits
     
 def aes_image_encrypt(image_path):
@@ -111,7 +123,7 @@ def aes_image_decrypt(img, key, IV):
     OUTPUT_IMAGE_SIZE = (height, width)
     image = Image.new('RGB', OUTPUT_IMAGE_SIZE)
     image.putdata(decrypted_bits)
-    image = image.rotate(-90)
+    # image = image.rotate(-90)
     image.save("di.png")
     
     
